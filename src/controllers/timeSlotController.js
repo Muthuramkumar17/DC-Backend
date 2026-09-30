@@ -1,5 +1,5 @@
-const TimeSlot = require('../models/timeSlot');
-const AuditLog = require('../models/auditLog');
+const TimeSlot = require('../models/TimeSlot');
+const AuditLog = require('../models/AuditLog');
 const availabilityService = require('../services/availabilityService');
 
 //createTimeSlot

@@ -1,5 +1,5 @@
-const PaymentMethod = require('../models/paymentMethod');
-const AuditLog = require('../models/auditLog');
+const PaymentMethod = require('../models/PaymentMethod');
+const AuditLog = require('../models/AuditLog');
 
 
 //createPaymentMethod

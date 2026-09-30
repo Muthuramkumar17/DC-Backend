@@ -1,5 +1,5 @@
 const BookingDate = require('../models/bookingDate');
-const AuditLog = require('../models/auditLog');
+const AuditLog = require('../models/AuditLog');
 
 //createBookingDate
 exports.createBookingDate = async (req, res) => {

@@ -1,5 +1,5 @@
 const ServiceDuration = require('../models/serviceDuration');
-const AuditLog = require('../models/auditLog');
+const AuditLog = require('../models/AuditLog');
 
 //createServiceDuration
 exports.createServiceDuration = async (req, res) => {

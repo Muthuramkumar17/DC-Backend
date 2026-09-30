@@ -1,5 +1,5 @@
 const PaymentMaster = require("../models/paymentMaster");
-const AuditLog = require("../models/auditLog");
+const AuditLog = require("../models/AuditLog");
 
 //createPaymentMaster
 exports.createPaymentMaster = async (req, res) => {

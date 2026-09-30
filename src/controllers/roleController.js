@@ -1,5 +1,5 @@
-const Role = require('../models/role');
-const AuditLog = require('../models/auditLog');
+const Role = require('../models/Role');
+const AuditLog = require('../models/AuditLog');
 const RoleLog = require('../models/AuditLog');
 
 //createRole

@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const Invoice = require("../models/invoice");
+const Invoice = require("../models/Invoice");
 const ServicePayment = require("../models/servicePayment");
 const Counter = require("../models/counter");
-const AuditLog = require("../models/auditLog");
+const AuditLog = require("../models/AuditLog");
 
 //populateInvoiceReferences 
 const populateInvoiceReferences = (query) =>

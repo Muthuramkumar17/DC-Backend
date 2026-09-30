@@ -1,5 +1,5 @@
 const BathroomCount = require("../models/bathroomCount");
-const AuditLog = require("../models/auditLog");
+const AuditLog = require("../models/AuditLog");
 
 //createBathroomCount
 exports.createBathroomCount = async (req, res) => {

@@ -1,5 +1,5 @@
 const Pricing = require('../models/pricing');
-const AuditLog = require('../models/auditLog');
+const AuditLog = require('../models/AuditLog');
 const PricingLog = require('../models/AuditLog');
 
 //createPricing

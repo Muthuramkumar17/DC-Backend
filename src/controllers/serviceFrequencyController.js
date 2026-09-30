@@ -1,5 +1,5 @@
-const ServiceFrequency = require('../models/serviceFrequency');
-const AuditLog = require('../models/auditLog');
+const ServiceFrequency = require('../models/ServiceFrequency');
+const AuditLog = require('../models/AuditLog');
 
 //createServiceFrequency
 exports.createServiceFrequency = async (req, res) => {

@@ -1,5 +1,5 @@
 const SubscriptionType = require("../models/subscriptionType");
-const AuditLog = require("../models/auditLog");
+const AuditLog = require("../models/AuditLog");
 const SubscriptionTypeLog = require("../models/AuditLog");
 
 //createSubscriptionType
