@@ -1,0 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const controller = require('../controllers/paymentMasterController');
+const auth = require('../middleware/auth');
+router.get('/', auth, controller.getAllPaymentMasters);
+router.get('/:id', auth, controller.getPaymentMasterById);
+router.post('/', auth, controller.createPaymentMaster);
+router.put('/:id', auth, controller.updatePaymentMaster);
+router.delete('/:id', auth, controller.deletePaymentMaster);
+module.exports = router;
