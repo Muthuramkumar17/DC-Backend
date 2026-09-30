@@ -98,11 +98,6 @@ const serviceFrequencies = [
     intervalDays: 14,
     isActive: true,
   },
-  {
-    frequencyName: "Once a Month",
-    intervalDays: 30,
-    isActive: false,
-  },
 ];
 
 const subscriptionTypes = [
@@ -121,11 +116,6 @@ const subscriptionTypes = [
     timeGap: 6,
     isActive: true,
   },
-  {
-    subscriptionName: "12 Months",
-    timeGap: 12,
-    isActive: false,
-  },
 ];
 
 const timeSlots = [
@@ -143,7 +133,7 @@ const paymentMethods = [
     isActive: true,
   },
   {
-    paymentMethodName: "Cash",
+    paymentMethodName: "Bank Transaction",
     isActive: true,
   },
 ];
