@@ -27,7 +27,8 @@ const auth = (req, res, next) => {
     if (!capability) return next();
     return authorize(capability)(req, res, next);
   } catch (error) {
-    return res.status(401).json({ message: 'Invalid or expired token.' });
+    console.error(error);
+    return res.status(401).json({ message: 'Invalid or expired token.'});
   }
 };
 
@@ -55,7 +56,8 @@ const authorize = (capability) => async (req, res, next) => {
     }
     return next();
   } catch (error) {
-    return res.status(403).json({ message: 'Unable to verify permissions' });
+    console.error(error);
+    return res.status(403).json({ message: 'Unable to verify permissions'});
   }
 };
 

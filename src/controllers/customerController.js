@@ -24,18 +24,26 @@ exports.createCustomer = async (req, res) => {
     } = req.body;
 
     if (typeof name !== "string" || typeof phoneNumber !== "string") {
-      return res.status(400).json({ message: "name and phoneNumber must be strings" });
+      return res
+        .status(400)
+        .json({ message: "name and phoneNumber must be strings" });
     }
 
     const normalizedName = name.trim();
     const normalizedPhoneNumber = phoneNumber.trim();
-    const validName = normalizedName.length >= 2 && normalizedName.length <= 100 && /^[\p{L} ]+$/u.test(normalizedName);
+    const validName =
+      normalizedName.length >= 2 &&
+      normalizedName.length <= 100 &&
+      /^[\p{L} ]+$/u.test(normalizedName);
     const validPhone = /^\d{10}$/.test(normalizedPhoneNumber);
     if (!validName || !validPhone) {
       return res.status(400).json({ message: "Invalid customer data" });
     }
 
-    if (Object.prototype.hasOwnProperty.call(req.body, "isActive") && typeof req.body.isActive !== "boolean") {
+    if (
+      Object.prototype.hasOwnProperty.call(req.body, "isActive") &&
+      typeof req.body.isActive !== "boolean"
+    ) {
       return res.status(400).json({ message: "isActive must be a boolean" });
     }
 
@@ -45,7 +53,8 @@ exports.createCustomer = async (req, res) => {
 
     const actionBy = req.user ? req.user._id : null;
 
-    const customer = new Customer({ customerId: await Customer.getNextSequentialId(),
+    const customer = new Customer({
+      customerId: await Customer.getNextSequentialId(),
       name: normalizedName,
       phoneNumber: normalizedPhoneNumber,
       address: address || "",
@@ -78,8 +87,10 @@ exports.createCustomer = async (req, res) => {
 
     res.status(201).json(savedCustomer);
   } catch (error) {
-    if (error?.code === 11000) return res.status(409).json({ message: "Phone number already exists" });
-    if (error?.name === "ValidationError") return res.status(400).json({ message: "Invalid customer data" });
+    if (error?.code === 11000)
+      return res.status(409).json({ message: "Phone number already exists" });
+    if (error?.name === "ValidationError")
+      return res.status(400).json({ message: "Invalid customer data" });
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -153,6 +164,7 @@ exports.getAllCustomers = async (req, res) => {
 
     res.status(200).json(enrichedCustomers);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -180,6 +192,7 @@ exports.getCustomerById = async (req, res) => {
 
     res.status(200).json(customer);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -193,11 +206,25 @@ exports.updateCustomer = async (req, res) => {
     if (!req.body || typeof req.body !== "object" || Array.isArray(req.body)) {
       return res.status(400).json({ message: "Invalid request body" });
     }
-    const allowedFields = ["name", "phoneNumber", "address", "doorNo", "block", "apartmentName", "landmark", "area", "city", "pincode", "isActive"];
+    const allowedFields = [
+      "name",
+      "phoneNumber",
+      "address",
+      "doorNo",
+      "block",
+      "apartmentName",
+      "landmark",
+      "area",
+      "city",
+      "pincode",
+      "isActive",
+    ];
     const updates = Object.fromEntries(
       allowedFields
-        .filter((field) => Object.prototype.hasOwnProperty.call(req.body, field))
-        .map((field) => [field, req.body[field]])
+        .filter((field) =>
+          Object.prototype.hasOwnProperty.call(req.body, field),
+        )
+        .map((field) => [field, req.body[field]]),
     );
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({ message: "No valid fields to update" });
@@ -209,19 +236,32 @@ exports.updateCustomer = async (req, res) => {
       updates.isActive = req.body.isActive;
     }
     if (updates.name !== undefined) {
-      if (typeof updates.name !== "string") return res.status(400).json({ message: "name must be a string" });
+      if (typeof updates.name !== "string")
+        return res.status(400).json({ message: "name must be a string" });
       updates.name = updates.name.trim();
-      if (updates.name.length < 2 || updates.name.length > 100 || !/^[\p{L} ]+$/u.test(updates.name)) {
+      if (
+        updates.name.length < 2 ||
+        updates.name.length > 100 ||
+        !/^[\p{L} ]+$/u.test(updates.name)
+      ) {
         return res.status(400).json({ message: "Invalid customer data" });
       }
     }
     if (updates.phoneNumber !== undefined) {
-      if (typeof updates.phoneNumber !== "string") return res.status(400).json({ message: "phoneNumber must be a string" });
+      if (typeof updates.phoneNumber !== "string")
+        return res
+          .status(400)
+          .json({ message: "phoneNumber must be a string" });
       updates.phoneNumber = updates.phoneNumber.trim();
       if (!/^\d{10}$/.test(updates.phoneNumber)) {
         return res.status(400).json({ message: "Invalid customer data" });
       }
-      if (await Customer.exists({ phoneNumber: updates.phoneNumber, _id: { $ne: req.params.id } })) {
+      if (
+        await Customer.exists({
+          phoneNumber: updates.phoneNumber,
+          _id: { $ne: req.params.id },
+        })
+      ) {
         return res.status(409).json({ message: "Phone number already exists" });
       }
     }
@@ -255,8 +295,10 @@ exports.updateCustomer = async (req, res) => {
 
     res.status(200).json(customer);
   } catch (error) {
-    if (error?.code === 11000) return res.status(409).json({ message: "Phone number already exists" });
-    if (error?.name === "ValidationError") return res.status(400).json({ message: "Invalid customer data" });
+    if (error?.code === 11000)
+      return res.status(409).json({ message: "Phone number already exists" });
+    if (error?.name === "ValidationError")
+      return res.status(400).json({ message: "Invalid customer data" });
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -293,6 +335,7 @@ exports.deleteCustomer = async (req, res) => {
       message: "Customer deleted successfully",
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -10,15 +10,6 @@ const PaymentMethod = require("../models/PaymentMethod");
 const PaymentAccount = require("../models/paymentAccount");
 const PaymentMaster = require("../models/paymentMaster");
 const Pricing = require("../models/pricing");
-const Customer = require("../models/Customer");
-const Booking = require("../models/Booking");
-const BookingDate = require("../models/bookingDate");
-const Subscription = require("../models/subscription");
-const Visit = require("../models/visit");
-const Invoice = require("../models/Invoice");
-const ServicePayment = require("../models/servicePayment");
-const Counter = require("../models/counter");
-const AuditLog = require("../models/AuditLog");
 
 const {
   role: roles,
@@ -34,62 +25,12 @@ const {
   pricing,
 } = require("./masters");
 
-const schemaFieldOrder = (schema) =>
-  Object.keys(schema.paths).filter(
-    (path) => path !== "__v" && !path.includes("."),
-  );
-
 const SYSTEM_USER_EMAIL = "system@gmail.com";
 
 const valuesDiffer = (document, data) =>
   Object.keys(data).some(
     (key) => String(document[key] ?? "") !== String(data[key] ?? ""),
   );
-
-const rewriteDocumentFieldOrder = async (Model) => {
-  const order = schemaFieldOrder(Model.schema);
-  const docs = await Model.collection.find({}).toArray();
-
-  for (const doc of docs) {
-    const ordered = {};
-
-    for (const key of order) {
-      if (doc[key] !== undefined) ordered[key] = doc[key];
-    }
-
-    for (const key of Object.keys(doc)) {
-      if (key === "__v" || ordered[key] !== undefined) continue;
-      ordered[key] = doc[key];
-    }
-
-    if (doc.__v !== undefined) ordered.__v = doc.__v;
-
-    await Model.collection.replaceOne({ _id: doc._id }, ordered);
-  }
-};
-
-const ALL_MODELS = [
-  Role,
-  User,
-  BathroomCount,
-  ServiceDuration,
-  ServiceFrequency,
-  SubscriptionType,
-  TimeSlot,
-  PaymentMethod,
-  PaymentAccount,
-  PaymentMaster,
-  Pricing,
-  Customer,
-  Booking,
-  BookingDate,
-  Subscription,
-  Visit,
-  Invoice,
-  ServicePayment,
-  Counter,
-  AuditLog,
-];
 
 const syncMaster = async (Model, filter, data, systemUserId) => {
   const existing = await Model.findOne(filter);
@@ -109,7 +50,11 @@ const syncMaster = async (Model, filter, data, systemUserId) => {
     createdBy: systemUserId,
     updatedBy: systemUserId,
   };
-  if (typeof Model.getNextSequentialId === "function" && Model.sequentialIdField && !createData[Model.sequentialIdField]) {
+  if (
+    typeof Model.getNextSequentialId === "function" &&
+    Model.sequentialIdField &&
+    !createData[Model.sequentialIdField]
+  ) {
     createData[Model.sequentialIdField] = await Model.getNextSequentialId();
   }
   return Model.create(createData);
@@ -120,7 +65,8 @@ const ensureSystemUser = async (userRole) => {
   if (existing) return existing;
 
   const passwordHash = await bcrypt.hash(
-    process.env.SYSTEM_USER_PASSWORD || require("crypto").randomBytes(32).toString("hex"),
+    process.env.SYSTEM_USER_PASSWORD ||
+      require("crypto").randomBytes(32).toString("hex"),
     12,
   );
 
@@ -235,11 +181,21 @@ const seedDatabase = async () => {
 
     // Payment accounts
     for (const item of paymentAccounts) {
-      await syncMaster(PaymentAccount, { accountName: item.accountName }, item, systemUser._id);
+      await syncMaster(
+        PaymentAccount,
+        { accountName: item.accountName },
+        item,
+        systemUser._id,
+      );
     }
 
     // Payment master
-    await syncMaster(PaymentMaster, { isActive: true }, paymentMaster, systemUser._id);
+    await syncMaster(
+      PaymentMaster,
+      { isActive: true },
+      paymentMaster,
+      systemUser._id,
+    );
 
     // Pricing
     for (const item of pricing) {
@@ -247,8 +203,12 @@ const seedDatabase = async () => {
         bathroomCount: item.bathroomCount,
       });
 
-      const frequency = await ServiceFrequency.findOne({ frequencyName: item.frequencyName });
-      const subscription = await SubscriptionType.findOne({ subscriptionName: item.subscriptionName });
+      const frequency = await ServiceFrequency.findOne({
+        frequencyName: item.frequencyName,
+      });
+      const subscription = await SubscriptionType.findOne({
+        subscriptionName: item.subscriptionName,
+      });
 
       await syncMaster(
         Pricing,

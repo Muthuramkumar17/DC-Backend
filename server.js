@@ -219,7 +219,7 @@ app.use((req, res) => {
 });
 
 // Global Error Handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error("Unhandled error:", err.message);
   if (err.code === 11000)
     return res.status(409).json({ message: "Duplicate value already exists" });

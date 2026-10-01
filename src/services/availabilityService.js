@@ -86,7 +86,6 @@ const combineDateAndTime = (dateStr, totalMinutes) => {
 
 
 const resolveServiceDuration = async ({
-  bathroomCount,
   bathroomCountId,
   pricingId,
   serviceDurationId,
@@ -150,7 +149,6 @@ const getAvailableSlotsForDate = async ({
   bathrooms,
   pricingId,
   serviceDurationId,
-  duration,
   bufferDuration,
   bufferTime,
 }) => {
@@ -318,7 +316,6 @@ const getAvailableSlotsForDate = async ({
 };
 
 const checkBookingOverlap = async ({
-  scheduledDate,
   startDateTime,
   endDateTime,
   excludeBookingId,

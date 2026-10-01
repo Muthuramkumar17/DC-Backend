@@ -4,7 +4,6 @@ const Customer = require('../models/Customer');
 const Invoice = require('../models/Invoice');
 const Counter = require('../models/counter');
 const TimeSlot = require('../models/TimeSlot');
-const ServiceDuration = require('../models/serviceDuration');
 const ServiceFrequency = require('../models/ServiceFrequency');
 const Pricing = require('../models/pricing');
 const PaymentAccount = require('../models/paymentAccount');
@@ -34,7 +33,6 @@ exports.createBooking = async (req, res) => {
       scheduledDate,
       startTime,
       discount,
-      discountReason,
       paymentMethodId,
       paymentAccountId,
       transactionId,
@@ -893,7 +891,7 @@ const buildVisitSchedule = ({ startDateTime, endDateTime, subscriptionType, serv
 };
 
 //buildBillBreakdown
-const buildBillBreakdown = ({ pricePerVisit, totalVisits, discount, paymentMaster }) => {
+const buildBillBreakdown = ({ pricePerVisit, discount, paymentMaster }) => {
   const mappedFinalAmount = roundCurrency(pricePerVisit);
   const requestedDiscountAmount = roundCurrency(Math.max(0, Number(discount) || 0));
   const discountAmount = roundCurrency(Math.min(requestedDiscountAmount, mappedFinalAmount));

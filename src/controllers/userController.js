@@ -106,7 +106,8 @@ exports.login = async (req, res) => {
       user: userResponse,
     });
   } catch (error) {
-    res.status(500).json({ message: "Unable to process login request" });
+    console.error(error);
+    res.status(500).json({ message: "Unable to process login request"});
   }
 };
 
