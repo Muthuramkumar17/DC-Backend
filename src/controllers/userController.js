@@ -122,11 +122,10 @@ exports.createUser = async (req, res) => {
      */
     res.cookie(AUTH_COOKIE_NAME, token, getCookieOptions());
 
-    /*
-     * Do not return the token in the response body.
-     */
     return res.status(201).json({
       message: "User created successfully",
+      accessToken: token,
+      token,
       user: userResponse,
     });
   } catch (error) {
@@ -140,7 +139,6 @@ exports.createUser = async (req, res) => {
 
 // Login
 exports.login = async (req, res) => {
-  debugger;
   try {
     if (!req.body || typeof req.body !== "object" || Array.isArray(req.body)) {
       return res.status(400).json({
@@ -198,6 +196,8 @@ exports.login = async (req, res) => {
 
     return res.status(200).json({
       message: "Login successful",
+      accessToken: token,
+      token,
       user: userResponse,
     });
   } catch (error) {
