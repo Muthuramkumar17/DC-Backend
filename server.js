@@ -6,6 +6,7 @@ dns.setServers(["8.8.8.8", "1.1.1.1"]);
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 const connectDB = require("./src/config/db");
 const AuditLog = require("./src/models/AuditLog");
@@ -47,6 +48,7 @@ app.use(
   }),
 );
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

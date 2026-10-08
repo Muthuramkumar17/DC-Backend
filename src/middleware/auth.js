@@ -6,11 +6,15 @@ const capabilityByMethod = { GET: 'canRead', POST: 'canWrite', PUT: 'canUpdate',
 const auth = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const hasBearerToken = authHeader?.startsWith('Bearer ');
+    const token = hasBearerToken
+      ? authHeader.slice('Bearer '.length).trim()
+      : req.cookies?.auth_token;
+
+    if (!token && !hasBearerToken) {
       return res.status(401).json({ message: 'Access denied. No token provided.' });
     }
 
-    const token = authHeader.slice('Bearer '.length).trim();
     if (!token) return res.status(401).json({ message: 'Invalid or expired token.' });
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretjwtkey_jolly_home_needs_2026');
 

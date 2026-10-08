@@ -1,16 +1,12 @@
 {
   "name": "deep-cleaning-backend",
   "version": "1.0.0",
-  "description": "Jolly Home Needs - Backend API",
+  "description": "Jolly Home Needs Backend API",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "seed": "node scripts/seedDatabase.js"
   },
   "keywords": [
     "express",
@@ -19,10 +15,10 @@
     "booking",
     "cleaning-service"
   ],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^5.2.1",
@@ -32,9 +28,6 @@
     "ulid": "^3.0.2"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "eslint": "^10.11.0",
-    "globals": "^17.13.0",
     "nodemon": "^3.1.4"
   }
 }
